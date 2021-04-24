@@ -12,6 +12,11 @@ def permut(str)
   return str.chars.to_a.permutation.map{|el| el.join}.sample(1)
 end
 
+def palindr(str)
+  s = str.delete "A-Z"
+  return true if s == s.reverse
+end
+
 puts "Выберите какое задание хотите решить."
 puts "1 - максимум среди чисел"
 puts "2 - перемешать все символы строки"
@@ -29,7 +34,9 @@ when 2
   str = input
   puts permut(str)
 when 3
-  pass
+  puts "Введите строку для палиндромирования, алфавит латынский"
+  str = input
+  puts palindr(str)
 when 4
   pass
 else
