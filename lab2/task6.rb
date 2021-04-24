@@ -1,4 +1,10 @@
-def read()
+def read_i()
+  print "Введите массив чисел: "
+  arr = STDIN.gets.chomp().split()
+  return arr.map{|el| el.to_i}
+end
+
+def read_f()
   print "Введите массив чисел: "
   arr = STDIN.gets.chomp().split()
   return arr.map{|el| el.to_i}
@@ -24,8 +30,12 @@ def method2(arr)
   return min1, min2
 end
 
-def method3()
-  pass 
+#Дано вещественное число R и массив вещественных чисел.
+#Найти элемент массива, который наиболее близок к данному числу.
+def method3(arr, r)
+  tmp = arr.reduce([]){|new_arr, el| new_arr.push((el-r).abs)}
+  i = tmp.index(tmp.min)
+  return arr[i]
 end
 
 def method4()
@@ -45,15 +55,20 @@ end
 choose = ARGV[0].to_i
 #path = ARGV[1]
 
-arr = read()
+
 
 case choose
 when 1
+  arr = read_i()
   puts method1(arr)
 when 2
+  arr = read_i()
   puts method2(arr)
 when 3
-  method3
+  arr = read_f()
+  print "Введите вещественное число R: "
+  r = STDIN.gets.chomp().to_f
+  puts method3(arr, r)
 when 4
   method4
 when 5
