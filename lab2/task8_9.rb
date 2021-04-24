@@ -1,10 +1,37 @@
+def input()
+  return STDIN.gets.chomp()
+end
+
 def max_in_str(str)
   t = str.split()
   t.map{|el| el.to_i}
   return t.max
 end
 
-puts "Введите строку чисел через пробелы"
-str = STDIN.gets.chomp()
+def permut(str)
+  return str.chars.to_a.permutation.map{|el| el.join}.sample(1)
+end
 
-puts "Max:" + max_in_str(str).to_s
+puts "Выберите какое задание хотите решить."
+puts "1 - максимум среди чисел"
+puts "2 - перемешать все символы строки"
+puts "3 - проверить являются ли прописные символы палиндромом"
+puts "4 - упорядочить слова по количеству букв"
+
+choose = input.to_i
+
+case choose
+when 1
+  str = input
+  puts "Max:" + max_in_str(str).to_s 
+when 2
+  puts "Введите строку для перемешивания"
+  str = input
+  puts permut(str)
+when 3
+  pass
+when 4
+  pass
+else
+  puts "Вы че-то не то ввели. До свидания"
+end
