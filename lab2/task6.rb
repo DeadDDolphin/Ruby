@@ -58,8 +58,11 @@ def method4(arr)
   return new_arr.uniq.sort()
 end
 
-def method5()
-  pass 
+#Дан список. Построить новый список из квадратов неотрицательных
+#чисел, меньших 100 и встречающихся в массиве больше 2 раз.
+def method5(arr)
+  new_arr = arr.reduce([]){|new_arr, el| new_arr << el**2 if el >= 0 and el < 100 and arr.count(el) > 2}
+  return new_arr.uniq
 end
 
 #if ARGV.length() < 2
@@ -89,6 +92,7 @@ when 4
   arr = read_i()
   puts method4(arr)
 when 5
-  method5
+  arr = read_i()
+  puts method5(arr)
 end
 
