@@ -40,8 +40,36 @@ def read_from_file(path)
   return data.split().map{|el| el.to_i}
 end
 
-size = ARGV[0].to_i
-path = ARGV[1]
+  
+if ARGV.length() < 2
+  puts "Ты за меня придурка не держи. Тут аргументов мало, 
+    надо два штука: первый - выбор метода, 
+    второй - путь к файлу/размер массива."
+end
 
-print (read_from_file(path))
-print "\n"
+choose = ARGV[0].to_i
+
+if choose != 5
+  size = ARGV[1].to_i
+else
+  path = ARGV[1]
+end
+
+case choose
+when 1
+  print(read1(size))
+  print "\n"
+when 2
+  print(read2(size))
+  print "\n"
+when 3
+  print(read3(size))
+  print "\n"
+when 4
+  print(read4(size))
+  print "\n"
+when 5
+  print(read_from_file(path))
+  print "\n"
+end
+
