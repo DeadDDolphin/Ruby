@@ -17,6 +17,17 @@ def palindr(str)
   return true if s == s.reverse
 end
 
+def order_words(str)
+  t = str.scan(/[[:word:]]+/)
+  t1 = t.reduce([]){|new_array, el| new_array<<el.size}
+  t1.sort
+  t2 = Array.new
+  for i in 0..t1.length-1
+    t2<<t[i]
+  end
+  return t2
+end
+
 puts "Выберите какое задание хотите решить."
 puts "1 - максимум среди чисел"
 puts "2 - перемешать все символы строки"
@@ -38,7 +49,9 @@ when 3
   str = input
   puts palindr(str)
 when 4
-  pass
+  puts "Введите строку для упорядочивания слова по количеству букв"
+  str = input
+  puts order_words(str)
 else
   puts "Вы че-то не то ввели. До свидания"
 end
