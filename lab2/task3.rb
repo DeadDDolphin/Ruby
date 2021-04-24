@@ -33,7 +33,15 @@ def read4(size)
   return new_arr
 end
 
-size = ARGV[0].to_i
+def read_from_file(path)
+  f = open path
+  data = f.read
+  f.close
+  return data.split().map{|el| el.to_i}
+end
 
-print (read4(size))
+size = ARGV[0].to_i
+path = ARGV[1]
+
+print (read_from_file(path))
 print "\n"
