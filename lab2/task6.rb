@@ -1,3 +1,5 @@
+require 'prime'
+
 def read_i()
   print "Введите массив чисел: "
   arr = STDIN.gets.chomp().split()
@@ -38,8 +40,22 @@ def method3(arr, r)
   return arr[i]
 end
 
-def method4()
-  pass 
+#Для введенного списка положительных чисел построить 
+#список всех положительных делителей элементов списка без повторений.
+def divisors(n)
+  return n if Prime.prime?(n)
+  x = n
+  arr = Array.new()
+  until x == 1
+    arr<<x if n%x == 0
+    x-=1
+  end
+  return arr
+end
+
+def method4(arr)
+  new_arr = arr.reduce([]){|new_arr, el| new_arr = new_arr.concat(divisors(el))}
+  return new_arr.uniq.sort()
 end
 
 def method5()
@@ -70,7 +86,8 @@ when 3
   r = STDIN.gets.chomp().to_f
   puts method3(arr, r)
 when 4
-  method4
+  arr = read_i()
+  puts method4(arr)
 when 5
   method5
 end
