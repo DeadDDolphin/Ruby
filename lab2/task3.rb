@@ -12,7 +12,17 @@ def read2(size)
   end
   return new_arr
 end
+
+def read3(size)
+  print "Введите массив чисел, #{size} штук: "
+  arr = STDIN.gets.chomp().split()
+  new_arr = Array.new()
+  for i in 0..size-1
+    new_arr<<arr[i].to_i
+  end
+  return new_arr
+end
 size = ARGV[0].to_i
 
-print (read2(size))
+print (read3(size))
 print "\n"
