@@ -8,6 +8,11 @@ def read_file(path)
   return arr
 end
 
+def input()
+  return STDIN.gets.chomp()
+end
+
+
 def order_by_length(arr)
    arr.sort_by{|el| el.size}
 end
@@ -30,9 +35,44 @@ def order_by_count_of_words_after_number(arr)
    |str| str.scan(/[^\d+\s*[:word:]$]+/).length 
   }
 end
+
+def sort1(arr)
+  arr.each do |str|
+    puts str.chars.map{|el| el.ord}.sum.to_f/str.chars.length.to_f
+  end
+  arr.sort_by{
+   |str| str.chars.map{|el| el.ord}.sum.to_f/str.chars.length.to_f
+  }
+end
+
 path = ARGV[0]
 
 arr = read_file(path)
+
+puts "Выберите какое задание хотите решить."
+puts "1 - сортировать в порядке увеличение среднего веса аски-кода символа строки"
+puts "2 - в порядке увеличения медианного значения выборки строк"
+puts "3 - в порядке увеличения квадратичного отклонения между наиболь-
+шим ASCII-кодом символа строки и разницы в ASCII-кодах пар зеркально рас-
+положенных символов строки"
+puts "4 - в порядке увеличение квадратичного отклонения частоты встре-
+чаемости самого распространенного символа в наборе строк от частоты его
+встречаемости в данной строке"
+
+choose = input.to_i
+
+case choose
+when 1
+  puts sort1(arr)
+when 2
+  pass
+when 3
+  pass
+when 4
+  pass
+  puts "Вы че-то не то ввели. До свидания"
+end
+
 #puts order_by_length(arr)
 #puts order_by_words_count(arr)
 #puts order_by_count_of_words_after_number(arr)
