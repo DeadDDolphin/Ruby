@@ -37,11 +37,27 @@ def order_by_count_of_words_after_number(arr)
 end
 
 def sort1(arr)
-  arr.each do |str|
-    puts str.chars.map{|el| el.ord}.sum.to_f/str.chars.length.to_f
-  end
+  #arr.each do |str|
+  #  puts str.chars.map{|el| el.ord}.sum.to_f/str.chars.length.to_f
+  #end
   arr.sort_by{
    |str| str.chars.map{|el| el.ord}.sum.to_f/str.chars.length.to_f
+  }
+end
+
+#Я не понимаю словосочетания "выборки строк", поэтому буду сортировать просто по медиане каждой строки
+#А так как это может быть любой символ, то сравниваться будет его код в ASCII
+def mediana(arr)
+  n = arr.length
+  if n%2 == 0
+    return (arr[n/2].ord + arr[n/2-1].ord).to_f/2.0
+  end
+  return arr[n/2].ord
+end
+
+def sort2(arr)
+  arr.sort_by{
+   |str| mediana(str.chars)
   }
 end
 
@@ -65,7 +81,7 @@ case choose
 when 1
   puts sort1(arr)
 when 2
-  pass
+  puts sort2(arr)
 when 3
   pass
 when 4
