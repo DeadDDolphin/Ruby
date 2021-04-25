@@ -61,6 +61,30 @@ def sort2(arr)
   }
 end
 
+def std_dev(arr)
+  n = arr.size             
+  arr.map!(&:to_f)         
+  mean = arr.reduce(&:+)/n
+  sum_sqr = arr.map {|x| x * x}.reduce(&:+)
+  std_dev = Math.sqrt((sum_sqr - n * mean * mean)/(n-1))
+  return std_dev
+end
+
+def get_arr_to_stddev(str)
+  arr = Array.new()
+  s = str.chars.map{|el| el.ord}
+  arr<<s.max
+  s1 = s.reverse
+  for i in 0..str.size/2
+    arr<<(s[i]-s1[i]).abs
+  end
+  return arr
+end
+
+def sort3(arr)
+    arr.sort_by{|str| std_dev(get_arr_to_stddev(str))}
+end
+
 path = ARGV[0]
 
 arr = read_file(path)
@@ -83,7 +107,7 @@ when 1
 when 2
   puts sort2(arr)
 when 3
-  pass
+  puts sort3(arr)
 when 4
   pass
   puts "Вы че-то не то ввели. До свидания"
