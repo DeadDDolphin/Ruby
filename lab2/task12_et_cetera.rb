@@ -85,6 +85,18 @@ def sort3(arr)
     arr.sort_by{|str| std_dev(get_arr_to_stddev(str))}
 end
 
+def popular_char(str)
+  t = str.chars.uniq
+  arr = t.reduce([]){|arr, el| arr<<t.count(el)}
+  id = arr.index(arr.max)
+  return t[id]  
+end
+
+def sort4(arr)
+  ch = popular_char(arr.join)
+  arr.sort_by{|str| std_dev([ch,popular_char(str)])}
+end
+
 path = ARGV[0]
 
 arr = read_file(path)
@@ -109,7 +121,8 @@ when 2
 when 3
   puts sort3(arr)
 when 4
-  pass
+  puts sort4(arr)
+else
   puts "Вы че-то не то ввели. До свидания"
 end
 
