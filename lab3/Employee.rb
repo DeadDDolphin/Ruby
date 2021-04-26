@@ -52,11 +52,18 @@ class Employee
     end
   end
 end
+
+class TestEmployee < Employee
+  def employee
+    return "Человеку по имени " + @fio + " звони сюда " + @phone_number
+  end
+end
+
 def read_from_file(path)
   f = open path
   arr=Array.new()
   f.each do |line|
-    arr<<line
+    arr<<line.chomp()
   end
   f.close
   return arr
@@ -77,5 +84,8 @@ when "2"
   data = input
 end
 
-emp = Employee.new(data)
-puts emp.employee
+emps = Array.new()
+for i in 0..data.length/11 - 1
+  emps<< TestEmployee.new(data[i*11..i*11+10])
+end
+emps.each{|el| puts el.employee}
