@@ -76,6 +76,39 @@ class Employee
     @fio = check_fio(value)
   end
 
+  def correct_date(value)
+    if value =~ /^[0123]?\.[01]\d\.([012]\d{3})|(\d{2})$/
+      return true
+    else
+      return false
+    end
+  end
+
+  def check_date(value)
+    if !correct_date(value)
+      raise "Uncorrect date"
+    else
+      new_val = value.split(".")
+      new_val[0] = new_val[0].sub(/^\d$/, "0"+new_val[0])
+
+      if new_val[2].to_i < 100 and new_val[2].to_i > 21
+        new_val[2] = "00"+new_val[2]
+        else if new_val[2].to_i < 1000
+          new_val[2] = "0" + new_val[2]
+          else if new_val[2].to_i <= 21
+            new_val[2] = "20" + new_val[2]
+          end
+        end
+      end
+
+      return new_val.join(".")
+    end
+  end
+
+  def birth_date=(value)
+    @birth_date = check_date(value)
+  end
+
   def last_place_of_job=(place)
     if @expirience > 0
       @last_place_of_job = place
@@ -180,5 +213,5 @@ obj = TestEmployee.new
 emps = obj.run("1")
 emps.each do |el|
   puts el
-  puts el.mail
+  puts el.birth_date
 end
