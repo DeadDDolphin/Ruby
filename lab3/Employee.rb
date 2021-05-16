@@ -46,6 +46,36 @@ class Employee
     @mail = check_mail(value)
   end
 
+  def correct_fio(value)
+    if value =~ /^((\s)*[А-я]+(\s*-\s*[А-я]*)?){2}(\s)*[А-я]+((\s)*[А-я]*)?$/
+      return true
+    else
+      return false
+    end
+  end
+
+  def check_fio(value)
+    if !correct_fio(value)
+      raise "Uncorrect fio"
+    else
+      new_val = value.split(" ")
+      t1 = value[/([А-я]+(\s*-\s*[А-я]*)?)/]
+      value = value.sub(/((\s)*[А-я]+(\s*-\s*[А-я]*)?)/,"")
+      t2 = value[/([А-я]+(\s*-\s*[А-я]*)?)/]
+      value = value.sub(/((\s)*[А-я]+(\s*-\s*[А-я]*)?)/,"")
+      t3 = value[/[А-я]+((\s)*[А-я]*)?/]
+      return [
+        t1.scan(/[[:word:]]+/).map{|el| el.capitalize}.join("-"),
+        t2.scan(/[[:word:]]+/).map{|el| el.capitalize}.join("-"),
+        t3.scan(/[[:word:]]+/).join(" ").capitalize
+     ].join(" ")
+    end
+  end
+
+  def fio=(value)
+    @fio = check_fio(value)
+  end
+
   def last_place_of_job=(place)
     if @expirience > 0
       @last_place_of_job = place

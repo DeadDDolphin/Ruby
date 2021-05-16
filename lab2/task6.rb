@@ -9,7 +9,7 @@ end
 def read_f()
   print "Введите массив чисел: "
   arr = STDIN.gets.chomp().split()
-  return arr.map{|el| el.to_i}
+  return arr.map{|el| el.to_f}
 end
 
 def read_from_file(path)
