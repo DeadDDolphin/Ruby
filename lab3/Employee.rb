@@ -5,6 +5,27 @@ class Employee
     set_all(data)
   end
 
+  def russian_phone(value)
+    if value =~ /^[(\+7)(7)(8)](\d{1}|\W){10,}$/
+      return true
+    else
+      return false
+    end
+  end
+
+  def check_phone(value)
+    if !russian_phone(value)
+      raise "Uncorrect phone number"
+    end
+    new_val = value.chars.map{|symb| symb if symb =~ /[0-9]/}
+    new_val = new_val.join
+    return "7-" + new_val[1..3] + "-" + new_val[4..]
+  end
+
+  def phone_number=(value)
+    @phone_number = check_phone(value)
+  end
+
   def last_place_of_job=(place)
     if @expirience > 0
       @last_place_of_job = place
@@ -101,11 +122,13 @@ class TestEmployee
   end
 
   def run(choose)
-    data = get_data(choose)
-    emps = create_employees(data)
-    emps.each{|el| puts el}
+    return create_employees(get_data(choose))
   end
 end
 
 obj = TestEmployee.new
-obj.run("1")
+emps = obj.run("1")
+emps.each do |el|
+  puts el
+  puts el.phone_number
+end
