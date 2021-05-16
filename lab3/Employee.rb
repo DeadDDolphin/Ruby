@@ -26,6 +26,26 @@ class Employee
     @phone_number = check_phone(value)
   end
 
+  def correct_mail(value)
+    if value =~ /^[\w]+@[A-z0-9]+\.[A-z]{2,4}$/
+      return true
+    else
+      return false
+    end
+  end
+
+  def check_mail(value)
+    if !correct_mail(value)
+      raise "Uncorrect mail adress"
+    else
+      return value.downcase
+    end
+  end
+
+  def mail=(value)
+    @mail = check_mail(value)
+  end
+
   def last_place_of_job=(place)
     if @expirience > 0
       @last_place_of_job = place
@@ -130,5 +150,5 @@ obj = TestEmployee.new
 emps = obj.run("1")
 emps.each do |el|
   puts el
-  puts el.phone_number
+  puts el.mail
 end
