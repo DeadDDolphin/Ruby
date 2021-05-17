@@ -1,7 +1,7 @@
 class Employee
   attr_accessor :fio, :birth_date, :phone_number, :adress, :mail, :pasport_serial, :speciality, :expirience, :last_place_of_job, :last_job, :last_zarplata
 
-  def initialize(data)
+  def initialize(data = ["Фамилия Имя Отчество", "01.01.2000", "79000000000", "г. Н, ул. Н, д. 1","mail@mail.com","000 000","отсутствует","0"])
     set_all(data)
   end
 
@@ -90,13 +90,14 @@ class Employee
     else
       new_val = value.split(".")
       new_val[0] = new_val[0].sub(/^\d$/, "0"+new_val[0])
+      new_val[1] = new_val[1].sub(/^\d$/, "0"+new_val[1])
 
       if new_val[2].to_i < 100 and new_val[2].to_i > 21
         new_val[2] = "00"+new_val[2]
-        else if new_val[2].to_i < 1000
-          new_val[2] = "0" + new_val[2]
-          else if new_val[2].to_i <= 21
-            new_val[2] = "20" + new_val[2]
+      else if new_val[2].to_i < 22
+          new_val[2] = "20" + new_val[2]
+      else if new_val[2].to_i < 1000
+          new_val[2] = "0" + new_val[2]        
           end
         end
       end
@@ -153,7 +154,11 @@ class Employee
   end
 
   def to_s
-    return @fio + "; place: " + @last_place_of_job
+    return @fio +
+    "; place: " + @last_place_of_job +
+    "; phone: " + @phone_number +
+    "; birth_date: " + @birth_date +
+    "; mail: " + @mail
   end
 
   def change_job(place, job, money)
@@ -204,9 +209,36 @@ class TestEmployee
     return Employee.new(data)
   end
 
+  def new_employee
+    return Employee.new
+  end
+
   def run(choose)
     return create_employees(get_data(choose))
   end
+
+  def change_data
+    puts "Input the name of category what you want to change"
+    value = input
+    emp = new_employee
+
+    case value
+    when "fio"
+      fio = input
+      emp.fio = fio
+    when "phone"
+      phone = input
+      emp.phone_number  = phone
+    when "date"
+      date = input
+      emp.birth_date = date
+    when "mail"
+      mail = input
+      emp.mail = mail
+    end
+    puts emp
+  end
+
 end
 
 obj = TestEmployee.new
@@ -215,3 +247,4 @@ emps.each do |el|
   puts el
   puts el.birth_date
 end
+obj.change_data
