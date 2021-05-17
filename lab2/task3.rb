@@ -18,7 +18,7 @@ def read3(size)
   arr = STDIN.gets.chomp().split()
   new_arr = Array.new()
   for i in 0..size-1
-    new_arr<<arr[i].to_i
+    new_arr << arr[i].to_i
   end
   return new_arr
 end
@@ -40,10 +40,10 @@ def read_from_file(path)
   return data.split().map{|el| el.to_i}
 end
 
-  
+
 if ARGV.length() < 2
-  puts "Ты за меня придурка не держи. Тут аргументов мало, 
-    надо два штука: первый - выбор метода, 
+  puts "Ты за меня придурка не держи. Тут аргументов мало,
+    надо два штука: первый - выбор метода,
     второй - путь к файлу/размер массива."
 end
 
@@ -72,4 +72,3 @@ when 5
   print(read_from_file(path))
   print "\n"
 end
-

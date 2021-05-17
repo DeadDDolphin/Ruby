@@ -5,16 +5,16 @@ class Employee
     set_all(data)
   end
 
-  def russian_phone(value)
+  def self.not_russian_phone?(value)
     if value =~ /^[(\+7)(7)(8)](\d{1}|\W){10,}$/
-      return true
-    else
       return false
+    else
+      return true
     end
   end
 
-  def check_phone(value)
-    if !russian_phone(value)
+  def self.check_phone(value)
+    if not_russian_phone?(value)
       raise "Uncorrect phone number"
     end
     new_val = value.chars.map{|symb| symb if symb =~ /[0-9]/}
@@ -23,19 +23,19 @@ class Employee
   end
 
   def phone_number=(value)
-    @phone_number = check_phone(value)
+    @phone_number = self.class.check_phone(value)
   end
 
-  def correct_mail(value)
+  def self.uncorrect_mail?(value)
     if value =~ /^[\w]+@[A-z0-9]+\.[A-z]{2,4}$/
-      return true
-    else
       return false
+    else
+      return true
     end
   end
 
-  def check_mail(value)
-    if !correct_mail(value)
+  def self.check_mail(value)
+    if uncorrect_mail?(value)
       raise "Uncorrect mail adress"
     else
       return value.downcase
@@ -43,19 +43,19 @@ class Employee
   end
 
   def mail=(value)
-    @mail = check_mail(value)
+    @mail = self.class.check_mail(value)
   end
 
-  def correct_fio(value)
+  def self.uncorrect_fio?(value)
     if value =~ /^((\s)*[А-я]+(\s*-\s*[А-я]*)?){2}(\s)*[А-я]+((\s)*[А-я]*)?$/
-      return true
-    else
       return false
+    else
+      return true
     end
   end
 
-  def check_fio(value)
-    if !correct_fio(value)
+  def self.check_fio(value)
+    if uncorrect_fio?(value)
       raise "Uncorrect fio"
     else
       new_val = value.split(" ")
@@ -73,10 +73,10 @@ class Employee
   end
 
   def fio=(value)
-    @fio = check_fio(value)
+    @fio = self.class.check_fio(value)
   end
 
-  def correct_date(value)
+  def self.correct_date(value)
     if value =~ /^[0123]?\.[01]\d\.([012]\d{3})|(\d{2})$/
       return true
     else
@@ -84,7 +84,7 @@ class Employee
     end
   end
 
-  def check_date(value)
+  def self.check_date(value)
     if !correct_date(value)
       raise "Uncorrect date"
     else
@@ -97,7 +97,7 @@ class Employee
       else if new_val[2].to_i < 22
           new_val[2] = "20" + new_val[2]
       else if new_val[2].to_i < 1000
-          new_val[2] = "0" + new_val[2]        
+          new_val[2] = "0" + new_val[2]
           end
         end
       end
@@ -107,7 +107,7 @@ class Employee
   end
 
   def birth_date=(value)
-    @birth_date = check_date(value)
+    @birth_date = self.class.check_date(value)
   end
 
   def last_place_of_job=(place)
@@ -171,80 +171,3 @@ class Employee
     end
   end
 end
-
-class TestEmployee
-  def read_from_file(path)
-    f = open path
-    arr = Array.new
-    f.each{|line| arr << line.chomp()}
-    f.close
-    return arr
-  end
-
-  def input
-    return STDIN.gets.chomp()
-  end
-
-  def get_data(choose)
-    case choose
-    when "1"
-      path = "data_list.txt"
-      data = read_from_file(path)
-    when "2"
-      puts "Введите данные работника: "
-      data = input
-    end
-    return data
-  end
-
-  def create_employees(data)
-    emps = Array.new
-    for i in 0..data.length/11 - 1
-      emps<< Employee.new(data[i*11..i*11+10])
-    end
-    return emps
-  end
-
-  def new_employee(data)
-    return Employee.new(data)
-  end
-
-  def new_employee
-    return Employee.new
-  end
-
-  def run(choose)
-    return create_employees(get_data(choose))
-  end
-
-  def change_data
-    puts "Input the name of category what you want to change"
-    value = input
-    emp = new_employee
-
-    case value
-    when "fio"
-      fio = input
-      emp.fio = fio
-    when "phone"
-      phone = input
-      emp.phone_number  = phone
-    when "date"
-      date = input
-      emp.birth_date = date
-    when "mail"
-      mail = input
-      emp.mail = mail
-    end
-    puts emp
-  end
-
-end
-
-obj = TestEmployee.new
-emps = obj.run("1")
-emps.each do |el|
-  puts el
-  puts el.birth_date
-end
-obj.change_data
