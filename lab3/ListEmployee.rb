@@ -46,9 +46,9 @@ class ListEmployee
     #ap @emps
   end
 
-  def to_proc
-    proc{|obj, value| obj if obj.send(self) == value}
-  end
+  # def to_proc
+  #   proc{|obj, value| obj if obj.send(self) == value}
+  # end
 
   def search_by(value, attr)
     command = "el."+attr
