@@ -71,17 +71,22 @@ class ListEmployee
     @emps.map{|el| el if el.pasport_serial ==pasport_serial}.compact
   end
 
+  def sort_by(attr)
+    @emps.sort_by{|obj| eval("obj."+attr)}
+  end
 end
 
 l = ListEmployee.new
 l.write_to_file
-l.read_from_file("./data_list.txt")
+l.read_from_file("lab3/data_list.txt")
 #puts l
-puts "Fio"
-puts l.search_by_fio("Федорук Дмитрий Владимирович")
-puts "mail"
-puts l.search_by_mail("pudding@mail.ru")
-puts "phone"
-puts l.search_by_phone_number("7-918-4958482")
-puts "serial"
-puts l.search_by("14587", "pasport_serial")
+# puts "Fio"
+# puts l.search_by_fio("Федорук Дмитрий Владимирович")
+# puts "mail"
+# puts l.search_by_mail("pudding@mail.ru")
+# puts "phone"
+# puts l.search_by_phone_number("7-918-4958482")
+# puts "serial"
+# puts l.search_by("14587", "pasport_serial")
+
+ap l.sort_by("expirience")

@@ -19,11 +19,11 @@ end
 
 def order_words(str)
   t = str.scan(/[[:word:]]+/)
-  t1 = t.reduce([]){|new_array, el| new_array<<el.size}
+  t1 = t.reduce([]){|new_array, el| new_array<< el.size}
   t1.sort
   t2 = Array.new
   for i in 0..t1.length-1
-    t2<<t[i]
+    t2<< t[i]
   end
   return t2
 end
@@ -39,7 +39,7 @@ choose = input.to_i
 case choose
 when 1
   str = input
-  puts "Max:" + max_in_str(str).to_s 
+  puts "Max:" + max_in_str(str).to_s
 when 2
   puts "Введите строку для перемешивания"
   str = input
