@@ -5,18 +5,18 @@ class Employee
     set_all(data)
   end
 
-  def unique?(obj)
-     if self.phone_number == obj.phone_number
-      false
-     end
-     if self.mail == obj.mail
-      false
-     end
-     if self.pasport_serial == obj.pasport_serial
-      false
-     end
-     true
-  end
+  # def unique?(obj)
+  #    if self.phone_number == obj.phone_number
+  #     false
+  #    end
+  #    if self.mail == obj.mail
+  #     false
+  #    end
+  #    if self.pasport_serial == obj.pasport_serial
+  #     false
+  #    end
+  #    true
+  # end
 
   def self.not_russian_phone?(value)
     if value =~ /^[(\+7)(7)(8)](\d{1}|\W){10,}$/

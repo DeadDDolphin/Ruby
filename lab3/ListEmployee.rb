@@ -50,12 +50,7 @@ class ListEmployee
     proc{|obj, value| obj if obj.send(self) == value}
   end
 
-  def &
-
-  end
-
   def search_by(value, attr)
-    ap attr.to_sym
     command = "el."+attr
     @emps.map{|el| el if eval(command) == value}
   end
