@@ -1,8 +1,21 @@
 class Employee
   attr_accessor :fio, :birth_date, :phone_number, :adress, :mail, :pasport_serial, :speciality, :expirience, :last_place_of_job, :last_job, :last_zarplata
 
-  def initialize(data = ["Фамилия Имя Отчество", "01.01.2000", "79000000000", "г. Н, ул. Н, д. 1","mail@mail.com","000 000","отсутствует","0"])
+  def initialize(data)
     set_all(data)
+  end
+
+  def unique?(obj)
+     if self.phone_number == obj.phone_number
+      false
+     end
+     if self.mail == obj.mail
+      false
+     end
+     if self.pasport_serial == obj.pasport_serial
+      false
+     end
+     true
   end
 
   def self.not_russian_phone?(value)
