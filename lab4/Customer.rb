@@ -47,43 +47,75 @@ class Customer
     @mail = self.class.check_mail(value)
   end
 
-  def self.check_fio(value)
-    surname_name = /([А-я]+(\s*-\s*[А-я]*)?)/
-    fathername = /(\s)*[А-я]+((\s)*[А-я]*)?/
-    if uncorrect_value?(value, /^((\s)*#{surname_name}){2}#{fathername}$/)
-      raise "Uncorrect fio"
-    else
-      #new_val = value.split(" ")
-      t1 = /^#{surname_name}/.match(value)
-      ap t1
-      #value = value.sub(/((\s)*[А-я]+(\s*-\s*[А-я]*)?)/,"")
-      t2 = surname_name.match(value).to_a[1]
-      ap t2
-      #value = value.sub(/((\s)*[А-я]+(\s*-\s*[А-я]*)?)/,"")
-      t3 = fathername.match(value).to_s
-      ap t3
-      return [
-        t1.scan(/[[:word:]]+/).map{|el| el.capitalize}.join("-"),
-        t2.scan(/[[:word:]]+/).map{|el| el.capitalize}.join("-"),
-        t3.scan(/[[:word:]]+/).join(" ").capitalize
-     ].join(" ")
-    end
+  def self.to_new_order(str_list)
+    str_list.map do |str|
+       if !str.include?("-")
+         str.capitalize
+       else
+         str.split("-").map(&:capitalize).join("-")
+       end
+     end.join(" ")
   end
+
+  def self.del_space(str)
+    str.delete(' ')
+  end
+
+  def self.check_fio(value)
+    if uncorrect_value?(value, /^((\s)*[А-я]+(\s*-\s*[А-я]*)?){2}(\s)*[А-я]+((\s)*[А-я]*)?$/)
+      raise "Uncorrect fio"
+    end
+    new_val = value.split(" ")
+    t1 = value[/([А-я]+(\s*-\s*[А-я]*)?)/]
+    value = value.sub(/((\s)*[А-я]+(\s*-\s*[А-я]*)?)/,"")
+    t2 = value[/([А-я]+(\s*-\s*[А-я]*)?)/]
+    value = value.sub(/((\s)*[А-я]+(\s*-\s*[А-я]*)?)/,"")
+    t3 = value[/[А-я]+((\s)*[А-я]*)?/]
+    #ap  r1 = scans(t1)
+    #r2 = t2
+    #ap res = scans(t1) +   scans(t2) + scans(t3)
+    res = [del_space(t1), del_space(t2), t3]
+    to_new_order(res)
+  end
+  #Хотелось сделать по красоте, но не
+  # def self.check_fio(value)
+  #   surname_name = /([А-я]+(\s*-\s*[А-я]*)?)/
+  #   fathername = /(\s)*[А-я]+((\s)*[А-я]*)?/
+  #   if uncorrect_value?(value, /^((\s)*[А-я]+(\s*-\s*[А-я]*)?){2}(\s)*[А-я]+((\s)*[А-я]*)?$/)
+  #     raise "Uncorrect fio"
+  #   else
+  #     value.downcase!
+  #     ap words= value.scan(/[А-я]+/)
+  #
+  #     ap double_names = value.scan(/[А-я]+\s*-\s*[А-я]*/)
+  #
+  #     ap value
+  #     ap double_names.map!{|el| el.include?(' ') ?el.delete!(' '):el}
+  #     ap double_names
+  #     res =[]
+  #     if double_names.length == 1
+  #       if double_names[0].include?(words[0])
+  #         puts "Двойная фамилия"
+  #         res << double_names[0]
+  #         res << words[2]
+  #       else if double_names[0].include?(words[1])
+  #         puts "Двойное имя"
+  #         res << words[0]
+  #         res << double_names[0]
+  #         ap res
+  #         end
+  #       end
+  #     else
+  #       res << double_names[0,1]
+  #     end
+  #     ap "asdsad:"
+  #     ap res << words.map{|word| word if !res.reduce([]){|arr, el| arr + el.split("-")}.include?(word)}.compact.join(" ")
+  #     to_new_order(res)
+  #   end
+  # end
 
   def fio=(value)
     @fio = self.class.check_fio(value)
   end
 
 end
-
-data = {
-  fio: "Федорук Дмитрий Владимирович",
-  old: 20,
-  national: "Русский",
-  phone_number: "+7918958482",
-  mail: "dimonych19@gmail.com",
-  pasport_serial: "213242",
-  driver_license: "213123"
-}
-obj = Customer.new(data)
-puts obj
