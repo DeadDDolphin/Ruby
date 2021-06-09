@@ -23,6 +23,27 @@ class Employee
   #    true
   # end
 
+  def as_json
+      {
+        fio: @fio,
+        birth_date: @birth_date,
+        phone_number: @phone_number,
+        adress: @adress,
+        mail: @mail,
+        pasport_serial: @pasport_serial,
+        speciality: @speciality,
+        expirience: @expirience,
+        last_place_of_job: @last_place_of_job,
+        last_job: @last_job,
+        last_zarplata: @last_zarplata
+      }
+  end
+
+  def self.from_json(json)
+    data = JSON.parse(json)
+    new(data.values)
+  end
+
   def self.not_russian_phone?(value)
     if value =~ /^[(\+7)(7)(8)](\d{1}|\W){10,}$/
       return false
@@ -177,6 +198,24 @@ class Employee
     "; phone: " + @phone_number +
     "; birth_date: " + @birth_date +
     "; mail: " + @mail
+  end
+
+  def <=>(obj)
+    if (self.fio == obj.fio and
+      self.birth_date == obj.birth_date and
+      self.phone_number == obj.phone_number and
+      self.adress == obj.adress and
+      self.mail == obj.mail and
+      self.pasport_serial == obj.pasport_serial and
+      self.speciality == obj.speciality and
+      self.expirience == obj.expirience and
+      self.last_place_of_job == obj.last_place_of_job and
+      self.last_job == obj.last_job and
+      self.last_zarplata == obj.last_zarplata)
+      true
+    else
+      false
+    end
   end
 
   def change_job(place, job, money)

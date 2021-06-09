@@ -1,6 +1,6 @@
 require "mysql2"
 require "awesome_print"
-require "./lab3/ListEmployee"
+#require "./lab3/ListEmployee"
 class TestDB
 
   attr_reader :client
@@ -14,12 +14,12 @@ class TestDB
   end
 
   def initialize(name_of_DB)
-    @client = Mysql2::Client.new(
-      :host => "localhost",
-      :username => "dolph",
-      :password => "password"
-    )
-    @client.query("USE #{name_of_DB}")
+      @client = Mysql2::Client.new(
+        :host => "localhost",
+        :username => "olph",
+        :password => "password"
+      )
+      @client.query("USE #{name_of_DB}")
   end
 
   def createDB(name)
@@ -64,22 +64,29 @@ class TestDB
     @client.query("select * from employees")
   end
 
+  def del_record(attr, value)
+    # q = "delete from employees where " + label.to_s + " = '" + value.to_s + "';"
+    # puts q
+    @client.query("delete from employees where #{attr.to_s} = '#{value.to_s}'")
+    #@client.query(q.to_s)
+  end
+
+  def update_record(attr, label, value, new_value)
+      @client.query("update employees set #{attr.to_s} = '#{new_value.to_s}' where #{label.to_s} = '#{value.to_s}'")
+  end
+
   def convert_values()
     get_records.reduce([]) do |arr, el|
       arr << el.collect{|key, value| value.to_s if key != "id"}.compact
      end
   end
-
-  def add_to_list
-    list = ListEmployee.new()
-    convert_values.each{|el| list.add(el)}
-    list
-  end
 end
 
 
-obj = TestDB.new("stuff")
-#ap obj.show_db
+#obj = TestDB.new("stuff")
+
+=begin
+ap obj.show_db
 values = [
   'Федорук Дмитрий Владимирович',
   '11.11.2000',
@@ -93,11 +100,12 @@ values = [
   '-',
   '-'
 ]
-#obj.del_emps
+obj.del_emps
 ap obj.show_tables
-#ap values.join(",")
+ap values.join(",")
 obj.create_employee
-#obj.insert(values)
+obj.insert(values)
 ap obj.get_records.each{|el| ap el}
+=end
 
-puts obj.add_to_list
+# puts obj.test_select
