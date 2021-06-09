@@ -13,15 +13,15 @@ module FileWork
   end
 
   def FileWork.read_sw
-    read_hash_from_file("LexAnalyz/txtFiles/serviceWords.txt", "W")
+    read_hash_from_file("Translators/LexAnalyz/txtFiles/serviceWords.txt", "W")
   end
 
   def FileWork.read_op
-    read_hash_from_file("LexAnalyz/txtFiles/operations.txt", "O")
+    read_hash_from_file("Translators/LexAnalyz/txtFiles/operations.txt", "O")
   end
 
   def FileWork.read_sep
-    read_hash_from_file("LexAnalyz/txtFiles/separators.txt", "S")
+    read_hash_from_file("Translators/LexAnalyz/txtFiles/separators.txt", "S")
   end
 
 end

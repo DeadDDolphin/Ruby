@@ -52,15 +52,14 @@ class CustomerCollection
   end
 
 #Очень интересная штука с этими символами выходит, но непонятная
-  # def search_by(value, attr)
-  #   @customers.map do |obj|
-  #     ap obj.send(attr).to_s
-  #     # ap obj if ap obj.send(:"#{attr}") == value
-  #   end
-  # end
   def search_by(value, attr)
-    @customers.map{|obj| obj if eval("obj."+attr) == value}
+    ap @customers.select do |obj|
+      ap if ap obj.send(:"#{attr}") == value
+    end
   end
+  # def search_by(value, attr)
+  #   @customers.map{|obj| obj if eval("obj."+attr) == value}
+  # end
 
   def sort_by(attr)
     @customers.sort_by{|obj| eval("obj."+attr)}

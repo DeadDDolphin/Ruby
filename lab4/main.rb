@@ -7,4 +7,4 @@ puts obj
 
 obj.write_to_file("/home/dolph/Документы/GitHub/Ruby/lab4/ouput_data.txt")
 
-puts obj.search_by("20", "old")
+puts obj.search_by("20", :old)

@@ -1,0 +1,7 @@
+5
+6
+r * r w r w
+w * r r r w
+w * r w r r
+w * * * r w
+r * r r r r

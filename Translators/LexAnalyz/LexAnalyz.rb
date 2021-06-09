@@ -1,6 +1,6 @@
 require "require_all"
 require_relative "FileWork"
-require_all "LexAnalyz/txtFiles"
+require_all "Translators/LexAnalyz/txtFiles"
 require "awesome_print"
 class LexAnalyz
   attr_accessor :code, :serv_words, :operators, :separators,
@@ -67,43 +67,84 @@ class LexAnalyz
     idents = {}
     i=0
     ap @code
-    @code.gsub(/[a-я]{1,}|[a-я\d]{1,}/) do |el|
-      idents[:"I#{i}"] = el
-      i+=i
+    ap @serv_words
+    @code.gsub(/[a-я]{1}[a-я\d]{1,}/) do |el|
+      if !@serv_words.values.include?(el) #and !.values.include?(el)
+        idents[:"I#{i}"] = el
+        i+=1
+      end
     end
+    puts "IDENTS"
     ap idents
   end
   # def sym_consts=(value)
   #   @sym_consts = value
   # end
 
-  def tokenize(str = @code)
+  # def tokenize()
+  #   strings = @code.split("\n")
+  #   strings.reduce([]){|arr, str| arr << scaner(str)}
+  # end
+
+  def scaner(str = @code)
     tokens = str.scan(/\w+|./).select {|x| x.match(/\S/)}
-    ap tokens
-    tokens.map!{|x| @num_consts.has_value?(x) ? x = @num_consts.key(x).to_s : x=x }
-    ap tokens
-    ap @sym_consts
+    tmp = tokens.clone
+    tokens.map! do |x|
+      if @num_consts.has_value?(x)
+        tmp[tokens.index(x)] = nil
+        x = @num_consts.key(x).to_s
+      else x=x
+      end
+    end
     tokens = tokens.each_index do |i|
       if @sym_consts.has_value?(tokens[i-1..i+1].join(""))
+        tmp[i-1..i+1] = nil
         tokens[i-1..i+1] = @sym_consts.key(tokens[i-1..i+1].join("")).to_s
       end
-    end
-    ap tokens
-    tokens.map!{|x| @serv_words.has_value?(x) ? x = @serv_words.key(x).to_s : x=x }
-    ap tokens
-    tokens.map!{|x| @operators.has_value?(x) ? x = @operators.key(x).to_s : x=x  }
-    ap tokens
-    tokens.map!{|x| @separators.has_value?(x) ? x = @separators.key(x).to_s : x=x }
-    ap tokens
-    i=0
-    tokens = tokens.each do |x|
-      if x =~ /\w+/
-        self.identifycators[:"I#{i}"] = x
-        i+=1
-        x = @identifycators.key(x).to_s
+      if @sym_consts.has_value?(tokens[i-1..i+1].join(" "))
+        tmp[i-1..i+1] = nil
+        tokens[i-1..i+1] = @sym_consts.key(tokens[i-1..i+1].join(" ")).to_s
       end
     end
-
+    tokens.map! do |x|
+      if @serv_words.has_value?(x)
+        tmp[tokens.index(x)] = nil
+        x = @serv_words.key(x).to_s
+       else x=x
+       end
+     end
+    tokens.map! do |x|
+      if @operators.has_value?(x)
+        tmp[tokens.index(x)] = nil
+        x = @operators.key(x).to_s
+       else x=x
+       end
+     end
+     tokens.map! do |x|
+       if @separators.has_value?(x)
+         tmp[tokens.index(x)] = nil
+         x = @separators.key(x).to_s
+       else x=x
+       end
+     end
+    i=0
+    tmp.each do |x|
+      if x != nil
+        if @identifycators.has_value?(x)
+          x = @identifycators.key(x).to_s
+        else
+          self.identifycators[:"I#{i}"] = x
+          i+=1
+          x = @identifycators.key(x).to_s
+        end
+      end
+    end
+    tokens.map! do |x|
+      if @identifycators.has_value?(x)
+        x = @identifycators.key(x).to_s
+      else x=x
+      end
+    end
     # @num_consts.each{|key, value| tokens.include?(value) ?  tokens[value]= key.to_s : 1+2}
     # @sym_consts.each{|key, value| tokens.include?(value) ? tokens[tokens.index(value)] = key.to_s : 1+2}
     # @serv_words.each{|key, value| tokens.include?(value) ? tokens[tokens.index(value)] = key.to_s : 1+2}
@@ -114,7 +155,17 @@ class LexAnalyz
 
 end
 
-obj = LexAnalyz.new("var i: integer;
-    a: array[1..10] of 'integer' ;")
+obj = LexAnalyz.new("program  n_4;
+  var i, imax: integer;
+      a: array[1..10] of integer;
+begin
+  randomize;
+  for i:=1 to 10 do a[i]:=random(100);
+  imax:=1;
+  for i:=2 to 10 do
+    if a[i]>a[imax] then
+       imax:=i;
+  write('max',a[imax])
+end.")
 ap obj
-ap obj.tokenize
+ap obj.scaner

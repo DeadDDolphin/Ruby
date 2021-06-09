@@ -31,21 +31,21 @@ class ListEmployee
     f.close
   end
 
-  def add(emp)
-    @emps << emp
+  def add(list)
+    @emps << Employee.new(list)
   end
 
   def read_from_file(path = "./employees.txt")
     data = open(path).reduce([]){|array, line| array << line.chomp}
     index = 0
     while index < data.length do
-      obj = Employee.new(data[index..index+11])
-      add(obj)
+      add(data[index..index+11])
       index+=11
     end
     #ap @emps
   end
 
+  
   # def to_proc
   #   proc{|obj, value| obj if obj.send(self) == value}
   # end
@@ -75,18 +75,18 @@ class ListEmployee
     @emps.sort_by{|obj| eval("obj."+attr)}
   end
 end
-
-l = ListEmployee.new
-l.write_to_file
-l.read_from_file("lab3/data_list.txt")
-#puts l
-# puts "Fio"
-# puts l.search_by_fio("Федорук Дмитрий Владимирович")
-# puts "mail"
-# puts l.search_by_mail("pudding@mail.ru")
-# puts "phone"
-# puts l.search_by_phone_number("7-918-4958482")
-# puts "serial"
-# puts l.search_by("14587", "pasport_serial")
-
-ap l.sort_by("expirience")
+#
+# l = ListEmployee.new
+# l.write_to_file
+# l.read_from_file("lab3/data_list.txt")
+# #puts l
+# # puts "Fio"
+# # puts l.search_by_fio("Федорук Дмитрий Владимирович")
+# # puts "mail"
+# # puts l.search_by_mail("pudding@mail.ru")
+# # puts "phone"
+# # puts l.search_by_phone_number("7-918-4958482")
+# # puts "serial"
+# # puts l.search_by("14587", "pasport_serial")
+#
+# ap l.sort_by("expirience")

@@ -1,5 +1,10 @@
 class Employee
-  attr_accessor :fio, :birth_date, :phone_number, :adress, :mail, :pasport_serial, :speciality, :expirience, :last_place_of_job, :last_job, :last_zarplata
+  attr_accessor :fio, :birth_date,
+   :phone_number, :adress,
+   :mail, :pasport_serial,
+   :speciality, :expirience,
+   :last_place_of_job,
+   :last_job, :last_zarplata
 
   def initialize(data)
     set_all(data)
