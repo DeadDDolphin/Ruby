@@ -16,7 +16,7 @@ class TestDB
   def initialize(name_of_DB)
       @client = Mysql2::Client.new(
         :host => "localhost",
-        :username => "olph",
+        :username => "dolph",
         :password => "password"
       )
       @client.query("USE #{name_of_DB}")
@@ -44,8 +44,24 @@ class TestDB
       SQL
   end
 
-  def del_emps()
-    @client.query("drop table employees")
+  def create_post
+    @client.query <<-SQL
+    create table if not exists post(
+      Post_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      post_name varchar(1024),
+      fixed_salary varchar(1024),
+      fixed_premium_bool varchar(1024),
+      fixed_premium_size varchar(1024),
+      quarterly_award_bool varchar(1024),
+      quarterly_award_bool varchar(1024),
+      possible_bonus_bool varchar(1024),
+      possible_bonus_percent varchar(1024),
+      foreign key(employees_id) references employees(id))
+      SQL
+  end
+
+  def del_table(table_name)
+    @client.query("drop table #{table_name}")
   end
 
   def show_db()
@@ -60,8 +76,12 @@ class TestDB
     @client.query("insert into employees values (NULL,\'#{values.join("','")}'\)")
   end
 
-  def get_records()
+  def get_records
     @client.query("select * from employees")
+  end
+
+  def del_all
+    @client.query("delete from employees")
   end
 
   def del_record(attr, value)

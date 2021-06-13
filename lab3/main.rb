@@ -1,12 +1,9 @@
-require_relative "TestEmployee"
-require_relative "Employee"
-require "awesome_print"
-ap Employee.check_fio("Федорук-Равшан Дмитрий -   дОльф Владимировичахме")
+require_relative "controllers/ControllerList"
 
-obj = TestEmployee.new
-emps = obj.run("1")
-emps.each do |el|
-  puts el
-  puts el.birth_date
+
+
+# Start the whole thing
+if __FILE__ == $0
+  c = ControllerList.new
+  c.show_table
 end
-#obj.change_data

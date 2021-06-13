@@ -5,74 +5,80 @@ require "yaml"
 require "psych"
 require "nokogiri"
 require "json"
+#require_relative "ViewContr"
+require_relative "SingleDB"
 
+#Атрибут коннект класса листЭмплои возвращает обьект Exception в случае неудавшегося подключения
 class ListEmployee
   #include ActiveModel::Serializers::JSON
-  attr_reader :emps
+  attr_accessor :emps, :connect, :users
 
   def initialize
     @emps = []
-    begin
-      read_from_DB
-    rescue => exception
-      if exception == Mysql2::Error::ConnectionError
-        puts "Не удалось подключиться к базе данных:"
-        puts exception.message
-      else
-        puts "Возникла ошибка:"
-        puts exception.message
-      end
-
-      puts "Желаете продолжить работу с данными из сериализованного файла?"
-      puts "\t1 - продолжить работу;\n\tЛюбой другой символ - завершить."
-      choose = gets.chomp
-      case choose
-      when '1'
-        puts read_from_yaml
-      else
-        abort "Всего хорошего!"
-      end
-    end
+    @users = []
+    @connect = ConnectDB.new.connect
+    rewrite_from_DB
   end
 
   def to_s
     @emps.reduce(""){|str, obj| str + obj.to_s+"\n"}
   end
 
-  def connect_to_DB
-    connect = TestDB.new("stuff")
+  def connect=
+    @connect = ConnectDB.new.connect
   end
 
+  # def self.connect_to_DB
+  #   SingleDB.connection
+  # end
+
   def read_from_DB
+    @connect.convert_values.reduce([]){|new_arr, el| new_arr << el}
+  end
+
+  def rewrite_from_DB
     @emps.clear
-    connect_to_DB.convert_values.each{|el| add(el)}
+    read_from_DB.each{|el| add(el)}
   end
 
   def add_to_DB(value)
-    connect_to_DB.insert(value)
+    @connect.insert(value)
   end
 
-  def add_list_to_DB(list_employee)
-    list_employee.each{|emp| add_to_DB(emp.get_all)}
+  def add_list_to_DB
+    @emps.each{|emp| add_to_DB(emp.get_all)}
+  end
+
+  def rewrite_DB
+    @connect.del_all
+    add_list_to_DB
   end
 
   def del_from_DB(attr, value)
-    connect_to_DB.del_record(attr,value)
+    @connect.del_record(attr,value)
   end
 
   def change_node(attr, label, value, new_value)
-    connect_to_DB.update_record(attr, label, value, new_value)
+    @connect.update_record(attr, label, value, new_value)
   end
 
-  def write_to_yaml
+  def self.write_to_yaml(list_emps)
     File.open("data.yaml", "w") do |file|
-      file.write(Psych.dump(@emps))
+      file.write(Psych.dump(list_emps))
     end
   end
 
-  def read_from_yaml
-    @emps.clear
+  def inside_write_yaml
+      self.class.write_to_yaml(@emps)
+  end
+
+  def self.read_from_yaml
     Psych.load_file('data.yaml')
+  end
+
+  def rewrite_from_yaml
+    @emps.clear
+    @emps = self.class.read_from_yaml
   end
 
   def write_to_xml
@@ -157,6 +163,12 @@ class ListEmployee
     search_by(value, attr).each{|el| @emps.delete(el)}
   end
 
+  def update_record(value,attr,new_value, label)
+    cmd = "obj."+label +" = new_value"
+    search_by(value, attr).each do |el|
+      @emps.each{ |obj| obj <=> el ? eval(cmd): obj}
+     end
+  end
 
   def change_by(value,attr, new_emp)
     search_by(value, attr).each do |el|
@@ -166,7 +178,7 @@ class ListEmployee
 
   def search_by(value, attr)
     command = "el."+attr
-    @emps.map{|el| el if eval(command) == value}
+    @emps.map{|el| el if eval(command) == value}.compact
   end
 
   def search_by_fio(fio)
@@ -188,14 +200,25 @@ class ListEmployee
   def sort_by(attr)
     @emps.sort_by{|obj| eval("obj."+attr)}
   end
+
+  def return_data
+    @emps.reduce([]){|arr, obj| arr << obj.get_all}
+  end
+
+  def update
+    @users.each{|u| u.update}
+  end
+
 end
-#
-l = ListEmployee.new
+
+# l= ListEmployee.new
+# ap l.return_data
+#l = ListEmployee.new
 #l.read_from_file("lab3/data_list.txt")
 #puts l
 #l.add_list_to_DB(l.emps)
 #l.del_from_DB("fio","Федорук Дмитрий Владимирович")
-g = ListEmployee.new
+#g = ListEmployee.new
 #g.change_node("phone_number","fio", "Федорук Дмитрий Владимирович", "+79264967541")
 #g.add_list_to_DB(l.emps)
 #g.read_from_DB

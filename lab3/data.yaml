@@ -1,37 +1,34 @@
 ---
-- !ruby/object:Employee
-  fio: Пудин-Пугин Владимир Владимирович
-  birth_date: 01.05.1980
-  phone_number: 7-918-4925611
-  adress: г. Москва, Кремль
-  mail: pudding@mail.ru
-  pasport_serial: '14587'
-  speciality: политик
-  expirience: 20
-  last_place_of_job: Россия
-  last_job: президент
-  last_zarplata: '1000000000'
-- !ruby/object:Employee
-  fio: Федорук Дмитрий-Дольф Владимирович ахме
-  birth_date: 11.11.2000
-  phone_number: 7-918-4958482
-  adress: г.Краснодар, Общага
-  mail: dimonych19@gmail.com
-  pasport_serial: '1435'
-  speciality: студент
-  expirience: 0
-  last_place_of_job: 'No'
-  last_job: 'No'
-  last_zarplata: 'No'
-- !ruby/object:Employee
-  fio: Федорук Дмитрий Владимирович
-  birth_date: 11.11.2000
-  phone_number: 7-926-4967541
-  adress: г.Краснодар, Общага
-  mail: dimonych19@gmail.com
-  pasport_serial: '1435'
-  speciality: студент
-  expirience: 0
-  last_place_of_job: 'No'
-  last_job: 'No'
-  last_zarplata: 'No'
+- - Андреев Владимир Соломонович
+  - 01.05.1980
+  - 7-918-4925611
+  - г. Москва, Кремль
+  - pudding@mail.ru
+  - '14587'
+  - политик
+  - '20'
+  - Россия
+  - президент
+  - '1000000000'
+- - Федорук Дмитрий-Дольф Владимирович ахме
+  - 11.11.2000
+  - 7-918-4958482
+  - г.Краснодар, Общага
+  - dimonych19@gmail.com
+  - '1435'
+  - студент
+  - '0'
+  - 'No'
+  - 'No'
+  - 'No'
+- - Федорук Дмитрий Владимирович
+  - 11.11.2000
+  - 7-926-4967541
+  - г.Краснодар, Общага
+  - dimonych19@gmail.com
+  - '1435'
+  - студент
+  - '0'
+  - 'No'
+  - 'No'
+  - 'No'
