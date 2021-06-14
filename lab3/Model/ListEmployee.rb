@@ -1,11 +1,9 @@
-require "awesome_print"
-require_relative "./Employee"
-require "/home/dolph/Документы/GitHub/Ruby/lab6/TestDB.rb"
+require_relative "Employee"
+require_relative "./Database/ConnectDB.rb"
 require "yaml"
 require "psych"
 require "nokogiri"
 require "json"
-require_relative "SingleDB"
 
 #Атрибут коннект класса листЭмплои возвращает обьект Exception в случае неудавшегося подключения
 class ListEmployee
@@ -14,7 +12,7 @@ class ListEmployee
   def initialize
     @emps = []
     @users = []
-    @connect = ConnectDB.new.connect
+    @connect = self.connect
     rewrite_from_DB
   end
 
