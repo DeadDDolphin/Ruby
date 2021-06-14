@@ -55,7 +55,8 @@ class ControllerList
   end
 
   def update_record(value,attr)
-    controller_add = ControllerUpdate.new(@app, @model, [value, attr-1])
-    controller_add.show
+    controller_update = ControllerUpdate.new(@app, @model, [value, attr-1])
+    controller_update.show
   end
+
 end

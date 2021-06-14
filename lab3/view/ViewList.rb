@@ -71,13 +71,20 @@ class ViewList < FXMainWindow
 
     delete_button = FXButton.new(frame_buttons, "Удалить")
     delete_button.connect(SEL_COMMAND) do |sender, selector, data|
-      @controller.delete_record(choosen_value, choosen_col)
+      if choosen_value != nil and choosen_col != nil
+        @controller.delete_record(choosen_value, choosen_col)
+      else
+        FXMessageBox.warning(self, MBOX_OK,"Warning","Вы должны выбрать элемент из списка")
+      end
     end
 
     update_button = FXButton.new(frame_buttons, "Редактировать")
     update_button.connect(SEL_COMMAND) do |sender, selector, data|
-      @controller.update_record(choosen_value, choosen_col)
-    end
+      if choosen_value.class == String and choosen_col != nil
+        @controller.update_record(choosen_value, choosen_col)
+      else
+        FXMessageBox.warning(self, MBOX_OK,"Warning","Вы должны выбрать элемент из списка")
+      end    end
 
   end
 
