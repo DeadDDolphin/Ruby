@@ -5,12 +5,10 @@ require "yaml"
 require "psych"
 require "nokogiri"
 require "json"
-#require_relative "ViewContr"
 require_relative "SingleDB"
 
 #Атрибут коннект класса листЭмплои возвращает обьект Exception в случае неудавшегося подключения
 class ListEmployee
-  #include ActiveModel::Serializers::JSON
   attr_accessor :emps, :connect, :users
 
   def initialize
@@ -27,10 +25,6 @@ class ListEmployee
   def connect=
     @connect = ConnectDB.new.connect
   end
-
-  # def self.connect_to_DB
-  #   SingleDB.connection
-  # end
 
   def read_from_DB
     @connect.convert_values.reduce([]){|new_arr, el| new_arr << el}
@@ -118,13 +112,6 @@ class ListEmployee
     @emps
   end
 
-  # def is_unique?(emp)
-  #   if @emps.each{|el| el.unique?(emp)}
-  #     true
-  #   end
-  #   false
-  # end
-
   def emps=(list)
     @emps = list.each.with_index.reduce([]) do |new_arr, el, index|
       new_arr << Employee.new([index..index+11])
@@ -149,15 +136,11 @@ class ListEmployee
       add(data[index..index+11])
       index+=11
     end
-    #ap @emps
   end
 
   def read_list(list)
     list.each{|el| add(el)}
   end
-  # def to_proc
-  #   proc{|obj, value| obj if obj.send(self) == value}
-  # end
 
   def del_by(value, attr)
     search_by(value, attr).each{|el| @emps.delete(el)}
@@ -210,30 +193,3 @@ class ListEmployee
   end
 
 end
-
-# l= ListEmployee.new
-# ap l.return_data
-#l = ListEmployee.new
-#l.read_from_file("lab3/data_list.txt")
-#puts l
-#l.add_list_to_DB(l.emps)
-#l.del_from_DB("fio","Федорук Дмитрий Владимирович")
-#g = ListEmployee.new
-#g.change_node("phone_number","fio", "Федорук Дмитрий Владимирович", "+79264967541")
-#g.add_list_to_DB(l.emps)
-#g.read_from_DB
-#g.write_to_yaml
-#puts g.read_from_json
-#puts g
-# l.write_to_file
-# #puts l
-# # puts "Fio"
-# # puts l.search_by_fio("Федорук Дмитрий Владимирович")
-# # puts "mail"
-# # puts l.search_by_mail("pudding@mail.ru")
-# # puts "phone"
-# # puts l.search_by_phone_number("7-918-4958482")
-# # puts "serial"
-# # puts l.search_by("14587", "pasport_serial")
-#
-# ap l.sort_by("expirience")

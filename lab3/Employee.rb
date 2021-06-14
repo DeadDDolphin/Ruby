@@ -1,3 +1,4 @@
+require_relative "Validator/FacadeValidator"
 class Employee
   attr_accessor :fio, :birth_date,
    :phone_number, :adress,
@@ -9,19 +10,6 @@ class Employee
   def initialize(data)
     set_all(data)
   end
-
-  # def unique?(obj)
-  #    if self.phone_number == obj.phone_number
-  #     false
-  #    end
-  #    if self.mail == obj.mail
-  #     false
-  #    end
-  #    if self.pasport_serial == obj.pasport_serial
-  #     false
-  #    end
-  #    true
-  # end
 
   def as_json
       {
@@ -44,109 +32,20 @@ class Employee
     new(data.values)
   end
 
-  def self.not_russian_phone?(value)
-    if value =~ /^[(\+7)(7)(8)](\d{1}|\W){10,}$/
-      return false
-    else
-      return true
-    end
-  end
-
-  def self.check_phone(value)
-    if not_russian_phone?(value)
-      raise "Uncorrect phone number"
-    end
-    new_val = value.chars.map{|symb| symb if symb =~ /[0-9]/}
-    new_val = new_val.join
-    return "7-" + new_val[1..3] + "-" + new_val[4..]
-  end
-
   def phone_number=(value)
-    @phone_number = self.class.check_phone(value)
-  end
-
-  def self.uncorrect_mail?(value)
-    if value =~ /^[\w]+@[A-z0-9]+\.[A-z]{2,4}$/
-      return false
-    else
-      return true
-    end
-  end
-
-  def self.check_mail(value)
-    if uncorrect_mail?(value)
-      raise "Uncorrect mail adress"
-    else
-      return value.downcase
-    end
+    @phone_number = FacadeValidator.check_phone(value)
   end
 
   def mail=(value)
-    @mail = self.class.check_mail(value)
-  end
-
-  def self.uncorrect_fio?(value)
-    if value =~ /^((\s)*[А-я]+(\s*-\s*[А-я]*)?){2}(\s)*[А-я]+((\s)*[А-я]*)?$/
-      return false
-    else
-      return true
-    end
-  end
-
-  def self.check_fio(value)
-    if uncorrect_fio?(value)
-      raise "Uncorrect fio"
-    else
-      new_val = value.split(" ")
-      t1 = value[/([А-я]+(\s*-\s*[А-я]*)?)/]
-      value = value.sub(/((\s)*[А-я]+(\s*-\s*[А-я]*)?)/,"")
-      t2 = value[/([А-я]+(\s*-\s*[А-я]*)?)/]
-      value = value.sub(/((\s)*[А-я]+(\s*-\s*[А-я]*)?)/,"")
-      t3 = value[/[А-я]+((\s)*[А-я]*)?/]
-      return [
-        t1.scan(/[[:word:]]+/).map{|el| el.capitalize}.join("-"),
-        t2.scan(/[[:word:]]+/).map{|el| el.capitalize}.join("-"),
-        t3.scan(/[[:word:]]+/).join(" ").capitalize
-     ].join(" ")
-    end
+    @mail = FacadeValidator.check_mail(value)
   end
 
   def fio=(value)
-    @fio = self.class.check_fio(value)
-  end
-
-  def self.correct_date(value)
-    if value =~ /^[0123]?\.[01]\d\.([012]\d{3})|(\d{2})$/
-      return true
-    else
-      return false
-    end
-  end
-
-  def self.check_date(value)
-    if !correct_date(value)
-      raise "Uncorrect date"
-    else
-      new_val = value.split(".")
-      new_val[0] = new_val[0].sub(/^\d$/, "0"+new_val[0])
-      new_val[1] = new_val[1].sub(/^\d$/, "0"+new_val[1])
-
-      if new_val[2].to_i < 100 and new_val[2].to_i > 21
-        new_val[2] = "00"+new_val[2]
-      else if new_val[2].to_i < 22
-          new_val[2] = "20" + new_val[2]
-      else if new_val[2].to_i < 1000
-          new_val[2] = "0" + new_val[2]
-          end
-        end
-      end
-
-      return new_val.join(".")
-    end
+    @fio = FacadeValidator.check_fio(value)
   end
 
   def birth_date=(value)
-    @birth_date = self.class.check_date(value)
+    @birth_date = FacadeValidator.check_date(value)
   end
 
   def last_place_of_job=(place)
