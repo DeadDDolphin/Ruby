@@ -1,5 +1,5 @@
 require 'test/unit'
-require_relative "./Employee"
+require_relative "./Model/Employee"
 
 class EmployeeTests < Test::Unit::TestCase
 

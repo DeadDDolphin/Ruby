@@ -1,4 +1,4 @@
-require "/home/dolph/Документы/GitHub/Ruby/lab3/view/ViewDelete.rb"
+require_relative "./view/ViewDelete.rb"
 
 require 'fox16'
 include Fox

@@ -1,6 +1,4 @@
 require 'fox16'
-require 'date'
-require 'awesome_print'
 include Fox
 
 class ViewList < FXMainWindow

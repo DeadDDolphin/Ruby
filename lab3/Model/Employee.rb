@@ -42,8 +42,6 @@ class Employee
     new(data.values)
   end
 
-  # @!group ValidSetters
-  #   use class FacadeValidator to check and convert values to normal form
 
   # setter for attribute 'phone_number'
   # @param value [String] is some phone number in any format
@@ -68,11 +66,9 @@ class Employee
   def birth_date=(value)
     @birth_date = FacadeValidator.check_date(value)
   end
-  # @!endgroup
 
-  # @!group JobSetters
-  #   set value of attribute "No" if experience is 0
-  #setter for attribute 'last_place_of_job'
+
+  #setter for attribute 'last_place_of_job' fill attribute by "No" if expirience is 0
   # @param place [String] some string with name of last place of job
   def last_place_of_job=(place)
     if @expirience > 0
@@ -82,7 +78,7 @@ class Employee
     end
   end
 
-  #setter for attribute 'last_job'
+  #setter for attribute 'last_job' fill attribute by "No" if expirience is 0
   # @param job [String] some string with name of last job
   def last_job=(job)
     if @expirience > 0
@@ -92,7 +88,7 @@ class Employee
     end
   end
 
-  #setter for attribute 'zarplata'
+  #setter for attribute 'zarplata' fill attribute by "No" if expirience is 0
   # @param zarplata [String] some string with name of zarplata by last job
   def last_zarplata=(zarplata)
     if @expirience > 0
@@ -101,7 +97,6 @@ class Employee
       @last_zarplata = "No"
     end
   end
-  # @!endgroup
 
   # set all attributes, used in initialize
   # @param data [Array<String>] length of array must be 11

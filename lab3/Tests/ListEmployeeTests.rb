@@ -1,4 +1,4 @@
-require_relative "./ListEmployee"
+require_relative "./Model/ListEmployee"
 require "test/unit"
 
 #Атрибут коннект класса листЭмплои возвращает обьект Exception в случае неудавшегося подключения

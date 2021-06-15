@@ -1,7 +1,7 @@
-require "/home/dolph/Документы/GitHub/Ruby/lab3/view/ViewList.rb"
-require "/home/dolph/Документы/GitHub/Ruby/lab3/ListEmployee.rb"
-require_relative "./ControllerAdd.rb"
-require_relative "./ControllerUpdate.rb"
+require_relative "./view/ViewList.rb"
+require_relative "./Model/ListEmployee.rb"
+require_relative "ControllerAdd.rb"
+require_relative "ControllerUpdate.rb"
 
 
 require 'fox16'

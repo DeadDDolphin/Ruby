@@ -1,5 +1,4 @@
 require 'fox16'
-require 'date'
 
 include Fox
 

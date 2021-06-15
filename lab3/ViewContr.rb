@@ -1,4 +1,4 @@
-require_relative "ListEmployee"
+require_relative "/Model/ListEmployee"
 class ViewContr
   def self.exception_process(exception)
     if exception == Mysql2::Error::ConnectionError

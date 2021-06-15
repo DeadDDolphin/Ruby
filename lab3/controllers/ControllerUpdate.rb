@@ -1,4 +1,4 @@
-require "/home/dolph/Документы/GitHub/Ruby/lab3/view/ViewUpdate.rb"
+require_relative "./view/ViewUpdate.rb"
 
 require 'fox16'
 include Fox
