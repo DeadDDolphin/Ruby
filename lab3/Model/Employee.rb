@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require_relative "./Validator/FacadeValidator"
+require_relative "../Validator/FacadeValidator"
 
 # @author Dmitry Fedoruk
 # Class describe instance of Employee

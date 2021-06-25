@@ -1,4 +1,4 @@
-require_relative "./view/ViewUpdate.rb"
+require_relative "../view/ViewUpdate.rb"
 
 require 'fox16'
 include Fox
@@ -21,7 +21,7 @@ class ControllerUpdate
       "fio",
       "birth_date",
       "phone_number",
-      "address",
+      "adress",
       "mail",
       "pasport_serial",
       "speciality",
@@ -32,6 +32,6 @@ class ControllerUpdate
     ]
     @model.update_record(@value, attributes[@attr], new_value, attributes[label])
     #@model.rewrite_DB
-    @model.update
+    @model.update_users
   end
 end

@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 require_relative "Employee"
-require_relative "./Database/ConnectDB.rb"
+require_relative "../Database/ConnectDB.rb"
+require_relative "SingleUsers"
 require "yaml"
 require "psych"
 require "nokogiri"
 require "json"
-
+require "awesome_print"
 # @author Dmitry Fedoruk
 # model class that is a list of objects of the class Employee
 class ListEmployee
@@ -16,8 +17,8 @@ class ListEmployee
   # fill emps from DB by rewrite_from_DB method
   def initialize
     @emps = []
-    @users = []
-    @connect = self.connect
+    @users = SingleUsers.new
+    @connect = ConnectDB.new.connect
     rewrite_from_DB
   end
 
@@ -28,11 +29,6 @@ class ListEmployee
     @emps.reduce(""){|str, obj| str + obj.to_s+"\n"}
   end
 
-  # setter to create connect to database
-  # create object of ConnectDB class and call connect method
-  def connect=
-    @connect = ConnectDB.new.connect
-  end
 
   # @!group UsersDB
   #   there are methods those use connect to DB
@@ -153,7 +149,7 @@ class ListEmployee
   # @!endgroup
 
   # setter for emps. add every 11 elements like a list of strings
-  # @param [Array<String>]
+  # @param list [Array<String>]
   def emps=(list)
     @emps = list.each.with_index.reduce([]) do |new_arr, el, index|
       new_arr << add([index..index+11])
@@ -169,7 +165,7 @@ class ListEmployee
   end
 
   # create and add new Employee object
-  # @param [Array<String>] array of 11 values
+  # @param list [Array<String>] array of 11 values
   def add(list)
     @emps << Employee.new(list)
   end
@@ -243,18 +239,18 @@ class ListEmployee
   end
 
   # search by phone number
-  # @param phone number[String] value of phone number
+  # @param phone_number [String] value of phone number
   def search_by_phone_number(phone_number)
     @emps.map{|el| el if el.phone_number ==phone_number}.compact
   end
 
-  # search by passport series
-  # @param passport series[String] value of passport series
+  # search by pasport series
+  # @param pasport_serial [String] value of passport series
   def search_by_pasport_serial(pasport_serial)
     @emps.map{|el| el if el.pasport_serial ==pasport_serial}.compact
   end
   # @!endgroup
-  
+
   #universal method to sort by attribute
   # @param attr[String] name of attribute
   def sort_by(attr)
@@ -268,8 +264,13 @@ class ListEmployee
   end
 
   #method to update the users. Observer pattern implementation
-  def update
-    @users.each{|u| u.update}
+  def update_users
+    @users.update
   end
 
+  #method to add new users in observer pattern
+  # @param user is some instance user of model
+  def add_user(user)
+    @users.add(user)
+  end
 end

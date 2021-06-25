@@ -1,5 +1,5 @@
-require_relative "./view/ViewList.rb"
-require_relative "./Model/ListEmployee.rb"
+require_relative "../view/ViewList.rb"
+require_relative "../Model/ListEmployee.rb"
 require_relative "ControllerAdd.rb"
 require_relative "ControllerUpdate.rb"
 
@@ -12,7 +12,7 @@ class ControllerList
     @app = FXApp.new
     @view = ViewList.new(@app,self)
     @model = ListEmployee.new
-    @model.users << self
+    @model.add_user(self)
   end
 
   def show_table
@@ -40,7 +40,7 @@ class ControllerList
       "fio",
       "birth_date",
       "phone_number",
-      "address",
+      "adress",
       "mail",
       "pasport_serial",
       "speciality",
@@ -51,7 +51,7 @@ class ControllerList
     ]
     @model.del_by(value, attributes[col-1])
     #@model.rewrite_DB
-    @model.update
+    @model.update_users
   end
 
   def update_record(value,attr)
