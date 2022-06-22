@@ -3,3 +3,4 @@ source "https://rubygems.org"
 gem "pg"
 gem "sqlite3", '<1.4'
 gem "awesome_print"
+gem "fxruby"

@@ -3,7 +3,7 @@ require_relative "Tour"
 class TourCollection
     attr_accessor :tours, :observers
 
-    def initialize
+    def initialize *args
         @tours = []
         @observers = []
     end
@@ -20,9 +20,14 @@ class TourCollection
     end
 
     def write_to_json json_path
-        File.open(json_path, "w") do |file|
-          @tours.each{|obj| file.puts(obj.get_as_json)}
+        res = @tours.reduce('{') do |str, obj|
+            str += '"' + @tours.index(obj).to_s + '"'+ ':' + obj.get_as_json + ','
         end
+        res.chop!
+        res+='}'
+        file = File.open(json_path, "w")
+        file.puts res
+        file.close        
     end
     
     def write_to_yaml yaml_path
@@ -51,15 +56,20 @@ class TourCollection
         @tours.map{|el| el if eval(command) == value}.compact
     end
 
+    def del_by_id(id)
+        @tours.reject!.with_index{|v, i| i == id }
+    end
+
     def del_by(value, attr)
         search_by(value, attr).each{|el| @tours.delete(el)}
     end
 
-    def update_record(value, attr_for_search, new_value, updated_attr)
-        cmd = "obj.#{updated_attr} = new_value"
-        search_by(value, attr_for_search).each do |el|
-            @tours.each{ |obj| obj <=> el ? eval(cmd): obj}
-        end
+    def update_record(id, new_value, label)
+        # cmd = "obj.#{updated_attr} = new_value"
+        # search_by(value, attr_for_search).each do |el|
+        #     @tours.each{ |obj| obj <=> el ? eval(cmd): obj}
+        # end
+        @tours[id].instance_variable_set("@#{label}", new_value)
     end
     
     def change_by(value,attr, new_tour)
@@ -73,15 +83,16 @@ class TourCollection
     end
 
     def get_data
-        @tours.map{|obj| obj.get_as_json}
+        @tours.map{|obj| obj.get_as_hash}
     end
 
     #Паттерн наблюдателя
     def call_update_in_observers
-        @observers.update
+        @observers.each{|observer| observer.update}
+        write_to_json("model/data_temp.json")
     end
 
     def add_observer observer
-        @observers.add(observer)
+        @observers << observer
     end
 end

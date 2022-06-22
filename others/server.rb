@@ -1,5 +1,5 @@
 require "sinatra"
 
-get '/main' do
+get '/' do
   erb :main
 end

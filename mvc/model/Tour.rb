@@ -11,8 +11,7 @@ class Tour
     end
 
     def self.check_date(value)
-        #Регулярку поправить
-        if value =~ /^[0123]?\.[01]\d\.([012]\d{3})|(\d{2})$/
+        if not value =~ /^((0?[1-9])|([12]?\d)|(3[01]))\.((1[012])|(0?[1-9]))\.(([012]\d{3})|(\d{2}))$/
             raise "Uncorrect value: #{value}"
         else
             new_val = value.split(".")
@@ -36,7 +35,7 @@ class Tour
     end
 
     def end_date=(value)
-        @start_date = Tour.check_date(value)
+        @end_date = Tour.check_date(value)
     end
 
     def set_by_hash(hash_data)        
@@ -64,7 +63,7 @@ class Tour
         set_from_array(JSON.parse(json_data))
     end
 
-    def get_as_json
+    def get_as_hash
         {
             hotel_name: @hotel_name,
             country: @country,
@@ -74,6 +73,10 @@ class Tour
             end_date: @end_date,
             tours_count: @tours_count
         }
+    end
+
+    def get_as_json
+        get_as_hash.to_json
     end
 
     def get_all
